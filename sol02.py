@@ -63,7 +63,7 @@ def get_Rt(M):
     t = M[:,-1] 
     
     Ur,Sr,Vr = np.linalg.svd(R) 
-    R_ = Ur @ Vr.T 
+    R_ = Ur @ Vr
 
     alpha = np.linalg.norm(R_)/np.linalg.norm(R)
     t_ = alpha * t
@@ -91,23 +91,23 @@ def estimatePoseDLT(p, P, K):
 
 def reprojectPoints(P, M, K):
     Ph = homogeneous(P) 
+    print(Ph) 
     p = K @ M @ Ph.T
     p = p / p[2]
     return p[:-1].T 
 
 def main():
     K, p_W_corners, detected_corners, filenames = load_data() 
-    p0 = detected_corners[0]
+    q = detected_corners[0]
 
-    M = estimatePoseDLT(p0, p_W_corners, K) 
+    M = estimatePoseDLT(q, p_W_corners, K) 
     p = reprojectPoints(p_W_corners, M, K) 
-    print(p0) 
+    print(q) 
     print(p) 
 
-
     img = cv2.imread(filenames[0])
-    img = add_points(img, detected_corners[0])
-    #img = add_points(img, p) 
+    img = add_points(img, q, r=2, color=(0,0,255))
+    img = add_points(img, p, r=2, color=(0,255,0)) 
     imshow(img) 
 
     #db() 

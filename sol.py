@@ -134,11 +134,10 @@ def load_data():
 def main():
     K, D, P, filenames = load_data()  
 
-    Rt = poseVector2TransformationMatrix(P[0])
-
     ### undistorted image ###
 
     img_undistorted = cv2.imread('./data/images_undistorted/img_0001.jpg')  
+    Rt = poseVector2TransformationMatrix(P[0])
 
     corners_w = create_corner_dots()
     corners_px = projectPoints(K, Rt, corners_w)
@@ -155,12 +154,28 @@ def main():
     ### distorted images ### 
 
     img = cv2.imread(filenames[0]) 
-    corners_px = distort(corners_px, K, D) 
-    img = add_corners(img, corners_px)
+    img = add_corners(img, distort(corners_px, K, D))
+    img = add_cube(img, distort(cube_px, K, D)) 
 
     imshow(img, "distorted")  
     plt.imshow(img)
     plt.show() 
+
+    ### movie ### 
+    for i in range(len(filenames)):
+        Rt = poseVector2TransformationMatrix(P[i])
+        img = cv2.imread(filenames[i]) 
+
+        corners_w = create_corner_dots()
+        corners_px = projectPoints(K, Rt, corners_w)
+        img = add_corners(img, distort(corners_px, K, D))
+
+        cube_w = create_cube_dots(xy=(2,3), size=3)
+        cube_px = projectPoints(K, Rt, cube_w) 
+        img = add_cube(img, distort(cube_px, K, D)) 
+
+        imshow(img, "distorted")  
+
 
 if __name__=="__main__":
     main() 

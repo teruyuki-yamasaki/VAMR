@@ -16,6 +16,23 @@ def imshow(img, name="img"):
             break 
     cv2.destroyAllWindows()
 
+def imshow2(imgs):
+    interp = ["without bilinear interpolation", "with bilinear interpolation"]
+    fig, axs = plt.subplots(1, len(imgs), figsize=(20, 5)) 
+    for i, ax in enumerate(axs):
+        ax.imshow(imgs[i])
+        ax.set_title(interp[i])
+    plt.show()
+
+def imshow2_vertical(imgs):
+    fig, axs = plt.subplots(nrows=2, sharex=True, figsize=(10, 10)) 
+    axs[0].set_title('without bilinear interpolation')
+    axs[0].imshow(imgs[0])
+
+    axs[1].set_title('with bilinear interpolation')
+    axs[1].imshow(imgs[1])
+    plt.show()
+
 def add_corners(img, p, r=5, color=(0,0,255), thickness=-1):
     for x,y in zip(p[0], p[1]):
         img = cv2.circle(img, (round(x), round(y)), r, color, thickness)
@@ -118,6 +135,25 @@ def distort(p, K, D):
 
     return pd 
 
+def undistort(img_d, K, D, bilinear_interpolation=False): 
+    img = np.zeros_like(img_d) 
+    (height, width, _) = img.shape 
+
+    for v in range(height): 
+        for u in range(width):
+            [ud, vd] = distort(np.array([[u], [v]]), K, D).reshape(2) 
+            [u1, v1] = np.array(list(map(int, np.floor([ud, vd]))))
+
+            if bilinear_interpolation:
+                if 0 <= u1 and u1+1 < width and 0 <= v1 and v1+1 < height:
+                    [a, b] = [ud - u1, vd -v1] 
+                    img[v, u] = (1-b)*((1-a)*img_d[v1, u1] + a*img_d[v1, u1+1]) + b * ((1-a)*img_d[v1+1, u1] + a*img_d[v1+1, u1+1])
+
+            else:
+                if 0 <= u1 and u1 < width and 0 <= v1 and v1 < height:
+                    img[v, u] = img_d[v1, u1] 
+    return img 
+
 def load_data():
     K = open("./data/K.txt").read()
     D = open("./data/D.txt").read() 
@@ -130,6 +166,55 @@ def load_data():
     filenames = sorted(filenames) 
 
     return K, D, P, filenames
+
+
+def show_undistorted_images(img, K, D):
+    img0 = undistort(img, K, D, bilinear_interpolation=False)  
+    imshow(img0, "undistorted") 
+
+    img1 = undistort(img, K, D, bilinear_interpolation=True)  
+    imshow(img1, "undistorted") 
+
+    imshow2([img0, img1]) 
+
+def show_movie(P, K, D, filenames):
+    for i in range(len(filenames)):
+        img = cv2.imread(filenames[i]) 
+        Rt = poseVector2TransformationMatrix(P[i])
+
+        corners_w = create_corner_dots()
+        corners_px = projectPoints(K, Rt, corners_w)
+        img = add_corners(img, distort(corners_px, K, D))
+
+        cube_w = create_cube_dots(xy=(2,3), size=3)
+        cube_px = projectPoints(K, Rt, cube_w) 
+        img = add_cube(img, distort(cube_px, K, D)) 
+
+        imshow(img, "distorted") 
+
+def create_movie(P, K, D, filenames, shape=(480, 720, 3), fps=30, videoname='video.avi'):
+    height, width, layers = shape 
+    size = (height, width)
+    frame_array = np.zeros((len(filenames), height, width, layers))
+
+    for i in range(len(filenames)):
+        img = cv2.imread(filenames[i]) 
+        Rt = poseVector2TransformationMatrix(P[i])
+
+        corners_w = create_corner_dots()
+        corners_px = projectPoints(K, Rt, corners_w)
+        img = add_corners(img, distort(corners_px, K, D))
+
+        cube_w = create_cube_dots(xy=(2,3), size=3)
+        cube_px = projectPoints(K, Rt, cube_w) 
+        img = add_cube(img, distort(cube_px, K, D)) 
+        
+        frame_array[i] = img
+
+    out = cv2.VideoWriter(videoname, cv2.VideoWriter_fourcc(*'DIVX'), fps, size)
+    for i in range(len(frame_array)):
+        out.write(frame_array[i])
+    out.release()
 
 def main():
     K, D, P, filenames = load_data()  
@@ -148,8 +233,7 @@ def main():
     img_undistorted = add_cube(img_undistorted, cube_px) 
     
     imshow(img_undistorted, "undistorted") 
-    plt.imshow(img_undistorted)
-    plt.show() 
+    plt.imshow(img_undistorted); plt.show() 
 
     ### distorted images ### 
 
@@ -158,24 +242,14 @@ def main():
     img = add_cube(img, distort(cube_px, K, D)) 
 
     imshow(img, "distorted")  
-    plt.imshow(img)
-    plt.show() 
+    plt.imshow(img); plt.show() 
 
-    ### movie ### 
-    for i in range(len(filenames)):
-        img = cv2.imread(filenames[i]) 
-        Rt = poseVector2TransformationMatrix(P[i])
-
-        corners_w = create_corner_dots()
-        corners_px = projectPoints(K, Rt, corners_w)
-        img = add_corners(img, distort(corners_px, K, D))
-
-        cube_w = create_cube_dots(xy=(2,3), size=3)
-        cube_px = projectPoints(K, Rt, cube_w) 
-        img = add_cube(img, distort(cube_px, K, D)) 
-
-        imshow(img, "distorted")  
-
+    ### undistortion ### 
+    show_undistorted_images(img, K, D) 
+    
+    ### movie ###
+    show_movie(P, K, D, filenames)
+    create_movie(P, K, D, filenames, shape=img.shape) 
 
 if __name__=="__main__":
     main() 

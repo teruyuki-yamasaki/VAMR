@@ -72,9 +72,9 @@ def create_cube_dots(xy=(0,0), size=1, dx=0.04, dy=0.04):
 
     XYZ = np.stack((XYZ0, XYZ1)).reshape(-1,3)
 
-    XYZ = swapXY(XYZ)
+    YXZ = swapXY(XYZ)
 
-    return XYZ
+    return YXZ
 
 def vec2mat(w):
     theta = np.linalg.norm(w)
@@ -163,8 +163,8 @@ def main():
 
     ### movie ### 
     for i in range(len(filenames)):
-        Rt = poseVector2TransformationMatrix(P[i])
         img = cv2.imread(filenames[i]) 
+        Rt = poseVector2TransformationMatrix(P[i])
 
         corners_w = create_corner_dots()
         corners_px = projectPoints(K, Rt, corners_w)

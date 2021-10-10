@@ -109,6 +109,13 @@ def main():
     img = add_points(img, q, r=2, color=(0,0,255))
     img = add_points(img, p, r=2, color=(0,255,0)) 
     imshow(img) 
+    
+    for i in range(len(filenames)):
+        M = estimatePoseDLT(detected_corners[i], p_W_corners, K)
+        p = reprojectPoints(p_W_corners, M, K)
+        img = cv2.imread(filenames[i])
+        img = add_points(img, p, r=2, color=(0,255,0))
+        imshow(img) 
 
     #db() 
 

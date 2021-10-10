@@ -155,15 +155,12 @@ def main():
     ### distorted images ### 
 
     img = cv2.imread(filenames[0]) 
-    print(filenames[0]) 
     corners_px = distort(corners_px, K, D) 
     img = add_corners(img, corners_px)
 
     imshow(img, "distorted")  
     plt.imshow(img)
     plt.show() 
-
-    print(corners_px) 
 
 if __name__=="__main__":
     main() 

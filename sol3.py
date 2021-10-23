@@ -15,9 +15,11 @@ def imshow(img, name="img"):
             break
     cv2.destroyAllWindows() 
 
-def add_points(img, pts, r=5, color=(0,0,255), thickness=-1):
+def add_points(img, pts, r=2, color=(0,0,255), thickness=-1):
+    img = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB) 
     for pt in pts:
-        img = cv2.circle(img, (round(pt[0]), round(pt[1])), r, color, thickness)
+        img = cv2.circle(img, (round(pt[1]), round(pt[0])), r, color, thickness)
+    
     return img 
 
 def ImageGradientOp(method='Sobel'):
@@ -91,13 +93,19 @@ def HarrisScore(M, H, W, kappa=0.08):
 
     return R 
 
+def NonMaximumSupression(X, r=5):
+    for v in range(len(X)-2*r):
+        for u in range(len(X[0])-2*r):
+            subX = X[v:v+2*r+1,u:u+2*r+1]
+            X[v:v+2*r+1,u:u+2*r+1] = np.max(subX) * (subX == np.max(subX))
+    return X 
+
 def preproess(R, K):
     R = R * (R > K)
     Rmax = np.max(R) 
     Rmin = np.min(R)
     print(Rmax, Rmin) 
     return (R - Rmin) / (Rmax - Rmin) * 255.0
-
 
 def histgram(X, a=0, b=1, N=1000, ymax=1e4):
     counts, bins = np.histogram(X.flatten(),bins=N)
@@ -106,11 +114,11 @@ def histgram(X, a=0, b=1, N=1000, ymax=1e4):
     plt.ylim(-0.1,ymax)
     plt.show() 
 
-def keypoints(R, k=50):
-    R_sort = sorted(R.flatten(),reverse=True)
-    print(k) 
-    K = R_sort[k]
-    return np.where(R >= K)
+def keypoints(R, k=50): 
+    R = NonMaximumSupression(R) 
+    L = sorted(R.flatten(),reverse=True)[k]
+    K = np.where(R >= L) 
+    return np.concatenate([K[0], K[1]], axis=0).reshape(2,-1).T 
 
 patch_size = 5
 def main():
@@ -140,12 +148,12 @@ def main():
     histgram(R2, a=0.001, ymax=256) 
     imshow(R2, 'Harris') 
 
-    K1 = keypoints(R1) 
-    img1 = add_points(img, K1)
+    pts1 = keypoints(R1) 
+    img1 = add_points(img, pts1)
     imshow(img1, "ShiTomashi")
     
-    K2 = keypoints(R2) 
-    img2 = add_points(img, K2)
+    pts2 = keypoints(R2)
+    img2 = add_points(img, pts2)
     imshow(img2, "Harris")
     
 

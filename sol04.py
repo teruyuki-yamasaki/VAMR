@@ -99,3 +99,6 @@ def getDoGoctaves(img, S, O):
         print('*'*5 + "octave" + str(o) + ' is finished')
     
     return dogs
+
+dogs1 = getDoGoctaves(img1, S, O)
+dogs2 = getDoGoctaves(img2, S, O)

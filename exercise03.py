@@ -134,7 +134,7 @@ def matchDescriptors(query, base, match_lambda=4):
 
     _, matchId = np.unique(matchMat, return_index=True)
 
-    return matchMat, matchId
+    return matchMat, matchId[1:]
 
 def swapXY(A):
     B = np.zeros_like(A) 
@@ -152,7 +152,7 @@ def immatches(img, matchId, query_kpts, base_kpts):
 
     return img 
 
-def img2descriptors(img, num_kpts=200, non_max_suppression_r=1, descriptor_r=8, score="Harris", gradfilter="Sobel"):
+def im2kpt8des(img, num_kpts=200, non_max_suppression_r=1, descriptor_r=8, score="Harris", gradfilter="Sobel"):
     dI = imgrad(img, gradfilter) 
     M = StructureTensorM(dI, patch_r=1) 
 
@@ -166,33 +166,22 @@ def img2descriptors(img, num_kpts=200, non_max_suppression_r=1, descriptor_r=8, 
     
     return kpts, dess 
 
+def func(img_query, img_base):
+    kpts_query, des_query = im2kpt8des(img_query) 
+    kpts_base, des_base = im2kpt8des(img_base) 
+    matchMat, matchId = matchDescriptors(des_query, des_base, match_lambda=4) 
+    #imshow(matchMat)
+    imshow(immatches(img_query, matchId, kpts_query, kpts_base))
+
 def getFileNames():
     return sorted(glob.glob('../data/*'))
 
 def main():
-    img0 = imread('../data/000000.png')
-    img1 = imread('../data/000001.png') 
-
-    imshow(img0, 'img0')
-    imshow(img1, 'img1') 
-
-    kpts0, des0 = img2descriptors(img0) 
-    kpts1, des1 = img2descriptors(img1)
-
-    matchMat, matchId = matchDescriptors(des1, des0, match_lambda=4)  
-    imshow(matchMat)
-    imshow(immatches(img1, matchId, kpts1, kpts0))
-
     filenames = getFileNames() 
     img_base = imread(filenames[0]) 
     for i in range(len(filenames)):
         img_query = imread(filenames[i+1]) 
-
-        kpts_query, des_query = img2descriptors(img_query) 
-        kpts_base, des_base = img2descriptors(img_base) 
-        matchMat, matchId = matchDescriptors(des_query, des_base, match_lambda=4) 
-        imshow(immatches(img_query, matchId, kpts_query, kpts_base))
-
+        func(img_query, img_base) 
         img_base = img_query
 
 if __name__=='__main__':

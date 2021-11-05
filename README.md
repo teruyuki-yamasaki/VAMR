@@ -10,9 +10,10 @@ After determining corner positions of a virtual cube in a given three-dimensiona
 we calculate their corresponding pixel coordinates in each frame, using the camera's poses and orientations in the world coordinate system (extrinsic parameters) as well as the camera matrix (intrinsic parameters).
 
 ### 02. the Perspective-n-Points (PnP) problem
-To estimate the camera pose for each image in a given dataset, using corresponding pixel and world coordinates of the key points and the intrinsic parameters of the camera:
+To estimate the camera pose for each image in a given dataset, using corresponding pixel and world coordinates of the reference points provided for each image, as well as the camera matrix: the DLT algorithm
 
 ### 03. Harris detector + descriptor + matching
+To implement Harris corner detection and key point tracking: First evaluate the Harris score for each pixel of the input image, then select key points based on the Harris scores, and finally match descriptors in order to findfeature correnspondences between frames. 
 
 ### 04. SIFT detector + descriptor + matching
 

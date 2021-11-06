@@ -1,7 +1,7 @@
 # Exercie 01 - Augmented reality wireframe cube
 
 
-### Step 0 - Load dataset 
+### Step 0 : Load dataset 
 - K.txt : the camera matrix K
 - D.txt : the parameters for the camera's radial distortion model
 - poses.txt : the camera's orientation and position for each frame given as a 6D vector
@@ -24,3 +24,5 @@ def load_data():
 
     return K, D, P, filenames
 ```
+
+### Step 1 : Calculate the Transformation Matrix

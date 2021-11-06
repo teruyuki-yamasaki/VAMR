@@ -6,7 +6,7 @@ Vision Algorithms for Mobile Robotics is a course of the ETH Zurich Master in Ro
 ## Exercises
 ### 01. Augmented reality wireframe cube
 To superimpose a virtual cube on a video of a checker board viewed from different positions and orientation: 
-After determining corner positions of a virtual cube in a given three-dimensional world coordinate system that is associated with a planner grid, 
+After determining corner positions of a virtual cube in a given three-dimensional world coordinate system that is associated with a physical planner grid, 
 we calculate their corresponding pixel coordinates in each frame, using the camera's poses and orientations in the world coordinate system (extrinsic parameters) as well as the camera matrix (intrinsic parameters).
 
 ### 02. the Perspective-n-Points (PnP) problem

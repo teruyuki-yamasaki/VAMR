@@ -3,9 +3,7 @@
 ## About
 Vision Algorithms for Mobile Robotics is a course of the ETH Zurich Master in Robotics, Systems and Control, lectured by Prof. Dr. Davide Scaramuzza, the director of the Robotics and Perception Group. He introduces us to the fundamental computer vision algorithms used in mobile robotics:
 
-This course contains the exercise parts, in which students can gain hands-on expericences of implementing the computer vision algotithms provided during the lectures in order to have a deeper understanding of each topic.
-
-In this repository, I place what I have implemented for eace exercise.
+This course contains the exercise parts, in which students can gain hands-on expericences of implementing the computer vision algotithms provided during the lectures in order to have a deeper understanding of each topic. In this repository, I place what I have implemented for eace exercise with some of summries and comments.
 
 ## Exercises
 ### 01. Augmented reality wireframe cube

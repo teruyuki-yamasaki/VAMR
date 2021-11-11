@@ -9,3 +9,4 @@ The goal of this exercise is to reconcstruct a 3D scene using dense epipolar mat
 - backproject the matched pixels and triangulate the corresponding 3D point
 - pose information of the frames to accumulate a global point cloud and visualize it 
 
+## part 1: calculate pixel disparity 

@@ -19,4 +19,4 @@ To implement Harris corner detection and key point tracking: First evaluate the 
 
 ### 04. SIFT detector + descriptor + matching
 
-### 05. Stereo vision: rectification, epipolar matching, disparity, triangulation
+### 05. [Stereo Dense Reconstruction](https://github.com/teruyuki-yamasaki/VAMR/tree/main/exercise05)

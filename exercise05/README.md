@@ -9,6 +9,9 @@ The goal of this exercise is to reconcstruct a 3D scene using dense epipolar mat
 - backproject the matched pixels and triangulate the corresponding 3D point
 - pose information of the frames to accumulate a global point cloud and visualize it 
 
+We make use of the public [KITTI dataset](http://www.cvlibs.net/datasets/kitti/).
+<img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise05/results/images_left_right.png"/>
+
 ## part 1: calculate pixel disparity 
 SSDの計算([code](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise05/code/calc_ssd.py))
 

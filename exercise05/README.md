@@ -10,6 +10,7 @@ The goal of this exercise is to reconcstruct a 3D scene using dense epipolar mat
 - pose information of the frames to accumulate a global point cloud and visualize it 
 
 ## part 1: calculate pixel disparity 
-([code](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise05/code/calc_ncc.py))
+SSDの計算([code](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise05/code/calc_ssd.py))
+disparityの計算([code](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise05/code/disparity.py))
 <img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise05/results/disparity_ssd.png"/>
 

@@ -1,3 +1,6 @@
+min_disp = 5
+max_disp = 50
+
 def calc_ncc_fast(gray_left, gray_right, patch_radius=1):
     m_height, m_width = gray_left.shape 
     new_height, new_width = m_height - 2*patch_radius, m_width - 2*patch_radius 

@@ -11,6 +11,8 @@ The goal of this exercise is to reconcstruct a 3D scene using dense epipolar mat
 
 ## part 1: calculate pixel disparity 
 SSDの計算([code](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise05/code/calc_ssd.py))
+
 disparityの計算([code](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise05/code/disparity.py))
+
 <img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise05/results/disparity_ssd.png"/>
 

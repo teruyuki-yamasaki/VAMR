@@ -17,7 +17,7 @@ SSDの計算([code](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise
 
 disparityの計算([code](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise05/code/disparity.py))
 
-<img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise05/results/disparity_ssd.png"/>
+<img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise05/results/disparity_ssd_01.png"/>
 
 ## part 2: outlier removal 
 Reject all amibuous matches. 

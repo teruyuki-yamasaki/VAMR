@@ -1,6 +1,6 @@
 import numpy as np 
 
-def test_8point(fundamentalEightPoint, distPoint2EpipolarLine):
+def run_test_8point(fundamentalEightPoint, distPoint2EpipolarLine):
     N = 40;         # Number of 3-D points
     X = np.random.randn(4,N);  # Homogeneous coordinates of 3-D points
 

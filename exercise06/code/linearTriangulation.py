@@ -24,42 +24,18 @@ def linearTriangulation(p1, p2, M1, M2):
     # Output:
     #  - P(N, 4): homogeneous coordinates of 3-D points
 
-    p1xM1 = skew(p1) @ M1
-    p2xM2 = skew(p2) @ M2
-    A = np.concatenate([p1xM1, p2xM2], axis=-2)
-    tAA = np.transpose(A, axes=(0,2,1)) @ A
+    #TODO: create skew symmetric matrices of p1 and p2 
+    p1x = skew(p1) 
+    p2x = skew(p2) 
+
+    #TODO: create the matrix 
+    A = np.concatenate([p1x@M1, p2x@M2], axis=-2)
+
+    #TODO: solve the linear system of equations AX=0 
+    # by using the Singular Value Decomposition
+    tA = np.transpose(A, axes=(0,2,1))
+    tAA = tA @ A
     U, S, V = np.linalg.svd(tAA)
-    
     P_sol = V[:,-1,:] / V[:,-1,-1].reshape(-1,1)
 
     return P_sol 
-
-
-N = 10 #;         % Number of 3-D points
-
-# Test linear triangulation
-#P = randn(4,N);  % Homogeneous coordinates of 3-D points
-#P(3, :) = P(3, :) * 5 + 10;
-#P(4, :) = 1;
-
-P = np.random.randn(4, N)
-P[2, :] = P[2, :] * 5 + 10 
-P[3, :] = 1     
-
-M1 =  np.array([
-        [500, 0, 320, 0],
-        [0, 500, 240, 0],
-        [0, 0, 1, 0]])
-
-M2 =  np.array([
-        [500, 0, 320, -100,],
-        [0, 500, 240, 0],
-        [0, 0, 1, 0]]) 
-				
-p1 = M1 @ P    #% Image (i.e., projected) points
-p2 = M2 @ P
-
-P_est = linearTriangulation(p1,p2,M1,M2)
-
-print('P_est-P=\n')
-print(P_est-P.T)

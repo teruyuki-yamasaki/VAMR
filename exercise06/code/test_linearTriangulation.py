@@ -84,3 +84,45 @@ U0, S0, V0 = np.linalg.svd(tAA0)
 P0 = V0[:,-1,:] / V0[:,-1,-1] 
 print(P0)
 print(P[:,0])
+
+def skew(p):
+    op = np.array([
+        [[0,0,0],[0,0,1],[0,-1,0]],
+        [[0,0,-1],[0,0,0],[1,0,0]],
+        [[0,1,0],[-1,0,0],[0,0,0]]
+    ])
+
+    px = np.transpose(op @ p, axes=(0,2,1)) #.reshape(-1,3,3)
+    px = np.transpose(np.concatenate(px.T, axis=-1).reshape(-1,3,3), axes=(0,2,1)) 
+
+    if 0:
+        print(op.shape)
+        print(p.shape)
+        print(px) 
+    
+    return px
+
+#print(P)
+
+i = 0
+j = 4
+p1xM1 = skew(p1[:,i:j]) @ M1
+p2xM2 = skew(p2[:,i:j]) @ M2
+#A0 = np.vstack((p1xM1_0, p2xM2_0), axis=1)
+A = np.concatenate([p1xM1, p2xM2], axis=-2)
+#print(A0)
+tAA = np.transpose(A, axes=(0,2,1)) @ A
+#print(tAA0)
+U, S, V = np.linalg.svd(tAA)
+#print(V)
+
+i = 3
+Pi = V[i,-1,:] / V[i,-1,-1]
+print(Pi) 
+print(P[:,i])
+
+print(V[:,-1,:].shape)
+print(V[:,-1,-1].shape)
+print(V[:,-1,:] / (V[:,-1,-1]).reshape(-1,1)) 
+P_sol = V[:,-1,:] / V[:,-1,-1].reshape(-1,1)
+print(P_sol)

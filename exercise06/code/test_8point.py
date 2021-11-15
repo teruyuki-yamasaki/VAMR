@@ -1,6 +1,6 @@
 import numpy as np 
 
-def run_test_8point(fundamentalEightPoint, distPoint2EpipolarLine):
+def run_test_8point(fundamentalEightPoint, fundamentalEightPoint_normalized, distPoint2EpipolarLine):
     N = 40;         # Number of 3-D points
     X = np.random.randn(4,N);  # Homogeneous coordinates of 3-D points
 
@@ -22,7 +22,6 @@ def run_test_8point(fundamentalEightPoint, distPoint2EpipolarLine):
     x2 = P2 @ X;
 
     sigma = 1e-1;
-    #print(x1.shape)
     noisy_x1 = x1 + sigma * np.random.randn(x1.shape[0]).reshape(-1,1);
     noisy_x2 = x2 + sigma * np.random.randn(x2.shape[0]).reshape(-1,1);
 
@@ -37,8 +36,8 @@ def run_test_8point(fundamentalEightPoint, distPoint2EpipolarLine):
     cost_dist_epi_line = distPoint2EpipolarLine(F,x1,x2);
 
     print('Noise-free correspondences\n');
-    print('Algebraic error: #f\n', cost_algebraic);
-    print('Geometric error: #f px\n\n', cost_dist_epi_line);
+    print('Algebraic error: %f \n' % cost_algebraic);
+    print('Geometric error: %f px\n\n' % cost_dist_epi_line);
 
     ## Test with noise:
 
@@ -50,10 +49,9 @@ def run_test_8point(fundamentalEightPoint, distPoint2EpipolarLine):
     cost_algebraic = np.linalg.norm( np.sum(noisy_x2*(F@noisy_x1)) ) / np.sqrt(N);
     cost_dist_epi_line = distPoint2EpipolarLine(F,noisy_x1,noisy_x2);
 
-    print('Noisy correspondences (sigma=#f), with fundamentalEightPoint\n', sigma);
-    print('Algebraic error: #f\n', cost_algebraic);
-    print('Geometric error: #f px\n\n', cost_dist_epi_line);
-
+    print('Noisy correspondences (sigma=%f), with fundamentalEightPoint\n' % sigma);
+    print('Algebraic error: %f \n' % cost_algebraic);
+    print('Geometric error: %f px\n\n' % cost_dist_epi_line);
 
     ## Normalized 8-point algorithm
     # Call the normalized 8-point algorithm on inputs x1,x2
@@ -63,6 +61,6 @@ def run_test_8point(fundamentalEightPoint, distPoint2EpipolarLine):
     cost_algebraic = np.linalg.norm( np.sum(noisy_x2*(Fn@noisy_x1)) ) / np.sqrt(N);
     cost_dist_epi_line = distPoint2EpipolarLine(Fn,noisy_x1,noisy_x2);
 
-    print('Noisy correspondences (sigma=#f), with fundamentalEightPoint_normalized\n', sigma);
-    print('Algebraic error: #f\n', cost_algebraic);
-    print('Geometric error: #f px\n\n', cost_dist_epi_line);
+    print('Noisy correspondences (sigma=%f), with fundamentalEightPoint_normalized\n' % sigma);
+    print('Algebraic error: %f \n' % cost_algebraic);
+    print('Geometric error: %f px\n\n' % cost_dist_epi_line);

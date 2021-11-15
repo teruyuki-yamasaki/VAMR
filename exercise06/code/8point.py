@@ -1,5 +1,4 @@
 import numpy as np 
-from test_8point import run_test_8point
 
 def fundamentalEightPoint(p1,p2):
     # fundamentalEightPoint  The 8-point algorithm for the estimation of the fundamental matrix F
@@ -100,5 +99,6 @@ def estimateEssentialMatrix(p1, p2, K1, K2):
 
     return E 
 
+from 8point import *
 if __name__=="__main__":
     run_test_8point(fundamentalEightPoint, distPoint2EpipolarLine)

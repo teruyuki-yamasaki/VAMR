@@ -5,3 +5,4 @@ Load data ([imalgs.py](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exerc
 <img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise06/results/matches.png"/>
 
 [linlags.py](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise06/code/linalgs.py)
+[test_linalgs.py](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise06/code/test_linalgs.py)

@@ -1,6 +1,13 @@
 import numpy as np 
 
 def skew(p):
+    # Skew Symmetric Matrix
+    # Input:
+    #  - p(N, 3): homogeneous coordinates of points
+    #
+    # Output:
+    #  - px(N, 3, 3): Skew Symmetric Matrix of points 
+    
     op = np.array([
         [[0,0,0],[0,0,1],[0,-1,0]],
         [[0,0,-1],[0,0,0],[1,0,0]],
@@ -38,4 +45,4 @@ def linearTriangulation(p1, p2, M1, M2):
     U, S, V = np.linalg.svd(tAA)
     P_sol = V[:,-1,:] / V[:,-1,-1].reshape(-1,1)
 
-    return P_sol 
+    return P_sol.T

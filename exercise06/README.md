@@ -5,8 +5,7 @@ Load data ([imalgs.py](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exerc
 <img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise06/results/matches.png"/>
 
 [linearTriangulation.py](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise06/code/linearTriangulation.py)
-[test_linearTriangulation.py](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise06/code/test_linearTriangulation.py)
+([test](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise06/code/test_linearTriangulation.py))
 
 [linlags.py](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise06/code/linalgs.py)
-
-[test_linalgs.py](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise06/code/test_linalgs.py)
+([test](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise06/code/test_linalgs.py))

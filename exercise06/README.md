@@ -10,5 +10,5 @@ Load data ([imalgs.py](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exerc
 [linlags.py](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise06/code/linalgs.py)
 ([test](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise06/code/test_linalgs.py))
 
-[8point.py]()
+[8point.py](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise06/code/8point.py)
 ([test](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise06/code/test_8point.py))

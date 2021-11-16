@@ -1,5 +1,4 @@
-import numpy as np 
-from linearTriangulation import linearTriangulation 
+import numpy as np
 
 def run_test_linearTriangulatin(func):
     # Test linear triangulation
@@ -26,7 +25,8 @@ def run_test_linearTriangulatin(func):
     P_est = func(p1,p2,M1,M2)
 
     print('P_est-P=\n')
-    print(P_est-P.T)
+    print(P_est-P)
 
+from linearTriangulation import linearTriangulation 
 if __name__=="__main__":
     run_test_linearTriangulatin(linearTriangulation)

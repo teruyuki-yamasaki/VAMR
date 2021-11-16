@@ -127,6 +127,6 @@ def run_test_8point(fundamentalEightPoint, fundamentalEightPoint_normalized, dis
     print('Algebraic error: %f \n' % cost_algebraic);
     print('Geometric error: %f px\n\n' % cost_dist_epi_line)
 
-from 8pointalg import fundamentalEightPoint, fundamentalEightPoint_normalized, distPoint2EpipolarLine
+from 8point import fundamentalEightPoint, fundamentalEightPoint_normalized, distPoint2EpipolarLine
 if __name__=='__main__':
     run_test_8point(fundamentalEightPoint, fundamentalEightPoint_normalized, distPoint2EpipolarLine)

@@ -30,3 +30,29 @@ def StructureTensorM_fast(dI, patch_radius=1): # 0.65
     M[:,:,2] = np.sum(Iy**2, axis=-1) 
     
     return M
+
+def ShiTomasiScore(M):
+    e1 = M[:, :, 0]
+    e2 = M[:, :, 1]
+    e3 = M[:, :, 2] 
+
+    R = np.zeros(e1.shape, dtype=float)
+
+    R = 0.5 * (e1 + e3 - np.sqrt((e1 - e3)**2 + 4*e2**2))   
+
+    R[R<0] = 0  
+
+    return R
+
+def HarrisScore(M, kappa=0.08):
+    e1 = M[:, :, 0]
+    e2 = M[:, :, 1]
+    e3 = M[:, :, 2] 
+
+    detM = e1*e3 - e2**2
+    trM = e1 + e3 
+
+    R = detM - kappa * trM**2
+    R[R<0] = 0
+
+    return R 

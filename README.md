@@ -17,7 +17,7 @@ To estimate the camera pose for each image in a given dataset, using correspondi
 ### 03. [Harris detector + descriptor + matching](https://github.com/teruyuki-yamasaki/VA4MR/tree/main/exercise03)
 To implement Harris corner detection and key point tracking: First evaluate the Harris score for each pixel of the input image, then select key points based on the Harris scores, and finally match descriptors in order to find feature correnspondences between frames. 
 
-### 04. SIFT detector + descriptor + matching
+### 04. [SIFT detector + descriptor + matching](https://github.com/teruyuki-yamasaki/VAMR/tree/main/exercise04)
 
 ### 05. [Stereo Dense Reconstruction](https://github.com/teruyuki-yamasaki/VAMR/tree/main/exercise05)
 

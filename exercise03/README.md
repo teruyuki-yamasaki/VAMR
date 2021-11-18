@@ -17,4 +17,6 @@
 
 <img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise03/results/matches.png"/>
 
+- np.uniqueがおかしなことをしていないか？
+
 [main.py](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise03/code/main.py)

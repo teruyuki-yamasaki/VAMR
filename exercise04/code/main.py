@@ -24,7 +24,7 @@ def main():
             iminfo(img2, 'Img2') 
             imcompare(img1, img2) 
 
-    if 0: # Show how Gaussian filters work using random examples 
+    if 0: # Show how Gaussian filters work
         run_test_gaussian()
     
     if 0:
@@ -38,39 +38,31 @@ def main():
         showkpts(img2, des2)   
 
 def showkpts(img, descriptors):
-    if 0:
-        X = list() 
-        Y = list() 
-        for des in descriptors:
-            if des.octave == 0:
-                X.append(des.x) 
-                Y.append(des.y) 
 
-            else:
-                pass 
+    #print(len(descriptors))
+    kpts = np.zeros((len(descriptors),2), dtype=int) # datatype ?? 
+
+    print(len(kpts)) 
+
+    cnt = 0 
+    for des in descriptors:
+        if des.octave == 0:
+            kpts[cnt,0] = des.x 
+            kpts[cnt,1] = des.y 
+            cnt += 1
+
+        else:
+            pass 
         
-        kpts = np.array([X, Y],dtype=int).T 
     
-    if 1:
-        print(len(descriptors))
-        kpts = np.zeros((len(descriptors),2), dtype=int) # datatype ?? 
-
-        i = 0 
-        for des in descriptors:
-            if des.octave == 0:
-                kpts[i,0] = des.x 
-                kpts[i,1] = des.y 
-
-            else:
-                pass 
-            
-            i += 1
-        
-        #kpts = kpts[kpts!=[0,0]] 
+    kpts = kpts[:cnt] 
     
     print(len(kpts)) 
-    print(np.count_nonzero(kpts)) 
+
+    print(np.count_nonzero(kpts)) # 2634 
+
     img = impoints(img, kpts) 
+
     imshow(img)
 
 def img2des(img, O=5, S=3, sigma0=1.6, r=2):
@@ -78,21 +70,21 @@ def img2des(img, O=5, S=3, sigma0=1.6, r=2):
 
     D = list() 
     for octave in range(O):
-        des = dogp2des(gauss[octave], diffs[octave], octave)
+        des = diffs2des(gauss[octave], diffs[octave], octave)
         D.extend(des)
 
     return D  
 
-def dogp2des(gauss, diffs, octave, nonmax_suppression_radius=3): 
+def diffs2des(gauss, diffs, octave, nonmax_suppression_radius=3): 
     diffs_shape = diffs.shape
 
     kpts = DoGpyramid2KeyPoints(diffs, nonmax_suppression_radius)
 
     descriptors = list() 
     #print(DoGpyramid.shape)
-    for zxy in kpts: 
-        z, x, y = zxy 
-        #print(z, x, y) 
+    for zyx in kpts: 
+        z, y, x = zyx 
+        #print(z, y, x) 
 
         if condition(x,y,z,diffs_shape): 
             img = gauss[z-1] 
@@ -104,13 +96,6 @@ def dogp2des(gauss, diffs, octave, nonmax_suppression_radius=3):
 def condition(x, y, z, diffs_shape):
     depth, height, width = diffs_shape 
     return 0 < z and z < depth-1 and  7 <= x and x < height-8 and 7 <= y and y < width-8 
-
-def normScaler(sigma=1.5*16):
-    x = np.arange(16)
-    y = np.arange(16) 
-    xx, yy = np.meshgrid(x, y) 
-    kernel = np.exp(-((xx - 7)**2 + (yy - 7)**2) / sigma**2)
-    return kernel / np.sum(kernel)
 
 class Descriptor:
     def __init__(self, img, x, y, z, octave):
@@ -135,6 +120,12 @@ class Descriptor:
 
         return des 
 
+def normScaler(sigma=1.5*16):
+    x = np.arange(16)
+    y = np.arange(16) 
+    xx, yy = np.meshgrid(x, y) 
+    kernel = np.exp(-((xx - 7)**2 + (yy - 7)**2) / sigma**2)
+    return kernel / np.sum(kernel)
  
 
 def extract16x16Patch(img, x, y):
@@ -152,11 +143,11 @@ def showHistgram(X, a=0, b=1, N=15, ymax=5000):
     plt.ylim(-0.1,ymax)
     plt.show() 
 
-def DoGpyramid2KeyPoints(P, C=1, nonmax_suppression_radius=5):
+def DoGpyramid2KeyPoints(diffs, C=1, nonmax_suppression_radius=5):
     ''' select key points given a DoG pyramid 
 
     Input
-        - P: a Difference of Gaussian pyramid 
+        - diffs: a Difference of Gaussian pyramid 
         - C: threshold for noise suppression 
         - nonmax_suppression_radius: 
 
@@ -164,11 +155,64 @@ def DoGpyramid2KeyPoints(P, C=1, nonmax_suppression_radius=5):
         - kpts: selected key points 
         - zxy: 
     '''
-    P[P<=C] = 0 
-    P = nonMaxSuppress3d(P, nonmax_suppression_radius) 
-    kpts = selectKeyPoints3d(P)
+    diffs[diffs<=C] = 0 
+    diffs = nonMaxSuppress3d(diffs, nonmax_suppression_radius) 
+    kpts = selectKeyPoints3d(diffs)
+
     return kpts
 
+def selectKeyPoints3d(X, r=1):
+    if 0:
+        kpts = np.zeros_like(X, dtype=bool) 
+        zyx = [] 
+        for s in range(X.shape[0]-2*r):
+            for v in range(X.shape[1]-2*r):
+                for u in range(X.shape[2]-2*r):
+                    x = X[s:s+2*r+1, v:v+2*r+1, u:u+2*r+1] 
+                    M = x[r,r,r]
+                    x[r,r,r] = 0 
+                    if M > np.max(x):
+                        #print(s,v,u)
+                        kpts[s+r, v+r, u+r] = True 
+                        zyx.append([s+r,v+r,u+r]) 
+    else:
+        depth, height, width = X.shape  
+        patches = np.zeros((depth, height, width, (2*r+1)**3))
+        for z in range(2*r+1):
+            for y in range(2*r+1):
+                for x in range(2*r+1):
+                    patch = np.roll(X.flatten(), -(width*height*z + width*y + x)).reshape(depth, height, width) 
+                    patches[:,:,:, (2*r+1)**2*z + (2*r+1)*y + x] = patch 
+                    #print((2*r+1)**2*z + (2*r+1)*y + x)
+                        
+        patches = patches[:-2*r, :-2*r, :-2*r, :]
+
+        centers = patches[:,:,:,(2*r+1)**2*r + (2*r+1)*r + r + 1] 
+
+        arounds = patches - centers.reshape(depth-2*r, height-2*r, width-2*r, 1) 
+
+        maxes = np.max(arounds, axis=-1) # keepdims ? 
+
+        centers[centers <= maxes] = 0
+
+        boxes = np.zeros_like(X)
+
+        boxes[r:-r,r:-r,r:-r] = centers    
+
+        kpts = (boxes!=0)
+
+        kptId = kpts.flatten() * np.arange(len(kpts.flatten()))
+        kptId = kptId[kptId!=0] 
+
+        zyx = np.zeros((len(kptId[1:]),3),dtype=np.uint32) 
+        for i, id in enumerate(kptId[1:]):
+            z = id // (height*width) 
+            y = (id % (height*width)) // width
+            x = (id % (height*width)) % width 
+
+            zyx[i] = [z, y, x] 
+
+    return zyx
 
 def nonMaxSuppress2d(X, r=1):
     for v in range(len(X)-2*r):
@@ -219,61 +263,6 @@ def selectKeyPoints2d(X, r=1):
                     kpts[v+r, u+r] = True 
   
     return kpts 
-
-def selectKeyPoints3d(X, r=1):
-    if 0:
-        kpts = np.zeros_like(X, dtype=bool) 
-        zyx = [] 
-        for s in range(X.shape[0]-2*r):
-            for v in range(X.shape[1]-2*r):
-                for u in range(X.shape[2]-2*r):
-                    x = X[s:s+2*r+1, v:v+2*r+1, u:u+2*r+1] 
-                    M = x[r,r,r]
-                    x[r,r,r] = 0 
-                    if M > np.max(x):
-                        #print(s,v,u)
-                        kpts[s+r, v+r, u+r] = True 
-                        zyx.append([s+r,v+r,u+r]) 
-    else:
-        depth, height, width = X.shape  
-        patches = np.zeros((depth, height, width, (2*r+1)**3))
-        for z in range(2*r+1):
-            for y in range(2*r+1):
-                for x in range(2*r+1):
-                    patch = np.roll(X.flatten(), -(width*height*z + width*y + x)).reshape(depth, height, width) 
-                    patches[:,:,:, (2*r+1)**2*z + (2*r+1)*y + x] = patch 
-                    #print((2*r+1)**2*z + (2*r+1)*y + x)
-                        
-        patches = patches[:-2*r, :-2*r, :-2*r, :]
-
-        centers = patches[:,:,:,(2*r+1)**2*r + (2*r+1)*r + r + 1] 
-
-        arounds = patches - centers.reshape(depth-2*r, height-2*r, width-2*r, 1) 
-
-        maxes = np.max(arounds, axis=-1) # keepdims ? 
-
-        centers[centers <= maxes] = 0
-
-        boxes = np.zeros_like(X)
-
-        boxes[r:-r,r:-r,r:-r] = centers    
-
-        kpts = (boxes!=0)
-
-        #_, kptId = np.unique(kpts.flatten(), return_index=True); #print(_) 
-
-        kptId = kpts.flatten() * np.arange(len(kpts.flatten()))
-        kptId = kptId[kptId!=0] 
-
-        zyx = np.zeros((len(kptId[1:]),3),dtype=np.uint32) 
-        for i, id in enumerate(kptId[1:]):
-            z = id // (height*width) 
-            y = (id % (height*width)) // width
-            x = (id % (height*width)) % width 
-
-            zyx[i] = [z, y, x] 
-
-    return zyx
 
 def octavatePyramids(img, O=5, S=3, sigma0=1.6, r=2): 
     diffs = dict() 
@@ -478,7 +467,7 @@ def iminfo(img, name):
 def impoints(img, pts, r=2, color=(0,0,255), thickness=-1):
     img = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB) 
     for pt in pts:
-        img = cv2.circle(img, (round(pt[1]), round(pt[0])), r, color, thickness)
+        img = cv2.circle(img, (round(pt[0]), round(pt[1])), r, color, thickness)
     return img
 
 # tests 

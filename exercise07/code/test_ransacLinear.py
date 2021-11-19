@@ -119,4 +119,4 @@ if __name__=="__main__":
     'inlierRatio': 0.3
   }
   
-  test(generator, ransac)  
+  test_ransacLinear(generator, ransac)  

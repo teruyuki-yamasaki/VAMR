@@ -96,11 +96,16 @@ def test_ransacLinear(generator, ransac=None):
     axs[1].plot(Dgt[0], Dgt[1], color='green', label='ground truth')
     axs[1].scatter(Din[0], Din[1], color='blue', label='inliers')
     axs[1].scatter(Dout[0], Dout[1], color='red', label='outliers') 
+    
+    fullfit = np.polyfit(data[0],data[1],1)
+        axs[1].plot(Dgt[0], np.polyval(fullfit, Dgt[0]), color='pink', label='full fit')
 
     if ransac!=None:
         ransac['max_noise'] = max_noise
-        guess = ransacLinear(data, ransac)
-        axs[1].plot(Dgt[0], np.polyval(guess, Dgt[0]), color='orange', label='best guess with ransac')
+        
+        for i in range(3):
+            guess = ransacLinear(data, ransac)
+            axs[1].plot(Dgt[0], np.polyval(guess, Dgt[0]), color='orange', label='best guesses with ransac' if i==0 else '')
 
     plt.legend()  
     plt.show() 

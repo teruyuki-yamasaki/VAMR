@@ -98,7 +98,7 @@ def test_ransacLinear(generator, ransac=None):
     axs[1].scatter(Dout[0], Dout[1], color='red', label='outliers') 
     
     fullfit = np.polyfit(data[0],data[1],1)
-        axs[1].plot(Dgt[0], np.polyval(fullfit, Dgt[0]), color='pink', label='full fit')
+    axs[1].plot(Dgt[0], np.polyval(fullfit, Dgt[0]), color='pink', label='full fit')
 
     if ransac!=None:
         ransac['max_noise'] = max_noise

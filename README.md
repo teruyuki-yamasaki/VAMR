@@ -11,7 +11,6 @@ This course contains the exercise parts, in which students can gain hands-on exp
 <img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise01/results/cube_dots_distorted.png"/>
 
 ### 02. [the Perspective-n-Points (PnP) problem](https://github.com/teruyuki-yamasaki/VA4MR/tree/main/exercise02)
-To estimate the camera pose for each image in a given dataset, using corresponding pixel and world coordinates of the reference points provided for each image, as well as the camera matrix: the Direct Linear Transform (DLT) algorithm
 
 ### 03. [Harris detector + descriptor + matching](https://github.com/teruyuki-yamasaki/VA4MR/tree/main/exercise03)
 

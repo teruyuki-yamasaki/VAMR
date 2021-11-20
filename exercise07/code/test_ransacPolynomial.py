@@ -41,7 +41,7 @@ def test_ransacPoly(args, deg=1, ransac=None):
 
 def generatePolyData(args, deg):
     coef = np.random.rand(deg+1)  
-    if 1:
+    if deg>=2:
         coef[0] = 2
         coef[1] = -10
         coef[2] = 3

@@ -1,4 +1,4 @@
-# VA4MR - Vision Algorithms for Mobile Robotics
+# VAMR - Vision Algorithms for Mobile Robotics
 
 ## About
 [Vision Algorithms for Mobile Robotics](http://rpg.ifi.uzh.ch/teaching.html) is a course of the ETH Zurich Master in Robotics, Systems and Control, lectured by Prof. Dr. Davide Scaramuzza, the director of the Robotics and Perception Group. He introduces us to the fundamental computer vision algorithms used in mobile robotics:

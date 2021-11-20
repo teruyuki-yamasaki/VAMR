@@ -26,4 +26,6 @@ under process ...
 
 ### 06. [Two-View Geometry](https://github.com/teruyuki-yamasaki/VAMR/tree/main/exercise06)
 
+<img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise06/results/matches.png"/>
+
 ### 07. [From image to localization](https://github.com/teruyuki-yamasaki/VAMR/tree/main/exercise07)

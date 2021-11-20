@@ -13,6 +13,9 @@
 <img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise03/results/shitomashi.png"/>
 <img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise03/results/harris.png"/>
 
+### TODO:
+- score のヒストグラムの可視化
+
 [matches.py](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise03/code/matches.py)
 
 <img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise03/results/matches.png"/>

@@ -1,4 +1,4 @@
-# PnP
+# Harris detector 
 
 To implement Harris corner detection and key point tracking: First evaluate the Harris score for each pixel of the input image, then select key points based on the Harris scores, and finally match descriptors in order to find feature correnspondences between frames. 
 

@@ -1,4 +1,4 @@
-# Exercie 01 - Augmented reality wireframe cube
+# Exercise 01 - Augmented reality wireframe cube
 
 To superimpose a virtual cube on a video of a checker board viewed from different positions and orientation: 
 After determining corner positions of a virtual cube in a given three-dimensional world coordinate system that is associated with a physical planner grid, 

@@ -1,12 +1,12 @@
 import numpy as np 
 import matplotlib.pyplot as plt 
 
-def test_ransacPoly(args, deg=1, ransac=None):
+def test_ransacPolynomial(args, deg=1, ransac=None):
     # generate data 
     data, max_noise, Dgt, Din, Dout = generatePolyData(args, deg)  
     
     # show data 
-    fig, axs = plt.subplots(1, 3, figsize=(20, 5)) 
+    fig, axs = plt.subplots(1, 4, figsize=(20, 5)) 
 
     # show generated data 
     axs[0].set_title('given data')
@@ -22,20 +22,30 @@ def test_ransacPoly(args, deg=1, ransac=None):
 
     # predictions 
     # fullfit 
-    fullfit = np.polyfit(data[0], data[1], deg)
+    fullfit, fullErr, _, _, _ = np.polyfit(data[0], data[1], deg, full=True)
+    fullDist = np.abs(data[1] - np.polyval(fullfit, data[0])) 
+    fullCount = np.count_nonzero(fullDist < max_noise) 
     axs[1].plot(Dgt[0], np.polyval(fullfit, Dgt[0]), color='pink', label='full fit')
 
     # ransac 
     if ransac!=None:
         args['max_noise'] = max_noise
         for i in range(3):
-            guess, hist = ransacPoly(data, args, deg)
+            guess, histCount, histErr = ransacPoly(data, args, deg)
             axs[1].plot(Dgt[0], np.polyval(guess, Dgt[0]), color='orange', label='best guesses with ransac' if i==0 else '')
     axs[1].legend()
     
     # history of best guesses 
     axs[2].set_title('best guesses')
-    axs[2].plot(np.arange(len(hist)), hist, label='best guess')
+    axs[2].plot(np.arange(len(histCount)), histCount, label='best guess')
+    axs[2].plot(np.arange(len(histCount)), np.ones(len(histCount))*fullCount, label='fullfit guess')
+    axs[2].legend()
+
+    # history of best errors
+    axs[3].set_title('best errors')
+    axs[3].plot(np.arange(len(histErr)), histErr, label='best errors')
+    axs[3].plot(np.arange(len(histErr)), np.ones(len(histErr))*fullErr, label='fullfit error')
+    axs[3].legend()
      
     plt.show() 
 
@@ -90,12 +100,12 @@ def ransacPoly(data, args, degree):
     bestErr = np.inf 
     numInliers = np.zeros(maxIterations, np.uint8) 
     countInliers_best = 0 
+    histErr = np.zeros(maxIterations, float) 
 
     while numIterations < maxIterations:
         dist = clacDistance(data, degree)   
         countInliers = np.count_nonzero(dist<max_noise)
         
-
         if countInliers > data.shape[1] * inlierRatio:
             inliers = data.T[dist<max_noise]
             xin = inliers[:,0]
@@ -104,12 +114,14 @@ def ransacPoly(data, args, degree):
             
             if thisErr < bestErr:
                 bestFit = coef_in
+                bestErr = thisErr
         
         countInliers_best = max(countInliers, countInliers_best)
         numInliers[numIterations] = countInliers_best
+        histErr[numIterations] = bestErr 
         numIterations += 1
         
-    return bestFit, numInliers 
+    return bestFit, numInliers, histErr
 
 def clacDistance(data, degree=1): 
     # randomly select a sample of deg+1 points from data 
@@ -166,6 +178,7 @@ def clacDistance(data, degree=1):
     
     return dist 
 
+
 if __name__=="__main__":
     args = {
         'num_inliers': 20,
@@ -176,5 +189,7 @@ if __name__=="__main__":
         'maxIterations': 16*20,
         'inlierRatio': 0.3
     }
-
-    test_ransacPoly(args, deg=2, ransac=True)
+    
+    test_ransacPolynomial(args, deg=1, ransac=True)
+    test_ransacPolynomial(args, deg=2, ransac=True)
+    test_ransacPolynomial(args, deg=3, ransac=True)

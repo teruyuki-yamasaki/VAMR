@@ -7,9 +7,8 @@ This course contains the exercise parts, in which students can gain hands-on exp
 
 ## Exercises
 ### 01. [Augmented reality wireframe cube](https://github.com/teruyuki-yamasaki/VA4MR/tree/main/exercise01)
-To superimpose a virtual cube on a video of a checker board viewed from different positions and orientation: 
-After determining corner positions of a virtual cube in a given three-dimensional world coordinate system that is associated with a physical planner grid, 
-we calculate their corresponding pixel coordinates in each frame, using the camera's poses and orientations in the world coordinate system (extrinsic parameters) as well as the camera matrix (intrinsic parameters).
+
+<img src=""https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise01/results/cube_dots_distorted.png"/>
 
 ### 02. [the Perspective-n-Points (PnP) problem](https://github.com/teruyuki-yamasaki/VA4MR/tree/main/exercise02)
 To estimate the camera pose for each image in a given dataset, using corresponding pixel and world coordinates of the reference points provided for each image, as well as the camera matrix: the Direct Linear Transform (DLT) algorithm

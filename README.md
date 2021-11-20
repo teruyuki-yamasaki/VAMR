@@ -22,6 +22,8 @@ under process ...
 
 ### 05. [Stereo Dense Reconstruction](https://github.com/teruyuki-yamasaki/VAMR/tree/main/exercise05)
 
+<img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise05/results/disparity_ssd_01.png"/>
+
 ### 06. [Two-View Geometry](https://github.com/teruyuki-yamasaki/VAMR/tree/main/exercise06)
 
 ### 07. [From image to localization](https://github.com/teruyuki-yamasaki/VAMR/tree/main/exercise07)

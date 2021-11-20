@@ -18,4 +18,5 @@ cube and dots on undistorted image
 
 cube and dots on distorted image 
 
+
 <img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise01/results/cube_dots_distorted.png"/>

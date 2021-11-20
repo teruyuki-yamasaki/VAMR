@@ -6,7 +6,7 @@ def test_ransacPoly(args, deg=1, ransac=None):
     data, max_noise, Dgt, Din, Dout = generatePolyData(args, deg)  
     
     # show data 
-    fig, axs = plt.subplots(1, 2, figsize=(20, 5)) 
+    fig, axs = plt.subplots(1, 3, figsize=(20, 5)) 
 
     # show generated data 
     axs[0].set_title('given data')
@@ -29,14 +29,22 @@ def test_ransacPoly(args, deg=1, ransac=None):
     if ransac!=None:
         args['max_noise'] = max_noise
         for i in range(3):
-            guess = ransacPoly(data, args, deg)
+            guess, hist = ransacPoly(data, args, deg)
             axs[1].plot(Dgt[0], np.polyval(guess, Dgt[0]), color='orange', label='best guesses with ransac' if i==0 else '')
-            
-    plt.legend()  
+    axs[1].legend()
+    
+    # history of best guesses 
+    axs[2].set_title('best guesses')
+    axs[2].plot(np.arange(len(hist)), hist, label='best guess')
+     
     plt.show() 
 
 def generatePolyData(args, deg):
     coef = np.random.rand(deg+1)  
+    if 1:
+        coef[0] = 2
+        coef[1] = -10
+        coef[2] = 3
 
     # determin x range 
     xspan = args['xspan']
@@ -80,10 +88,13 @@ def ransacPoly(data, args, degree):
     numIterations = 0
     bestFit = None 
     bestErr = np.inf 
+    numInliers = np.zeros(maxIterations, np.uint8) 
+    countInliers_best = 0 
 
     while numIterations < maxIterations:
         dist = clacDistance(data, degree)   
         countInliers = np.count_nonzero(dist<max_noise)
+        
 
         if countInliers > data.shape[1] * inlierRatio:
             inliers = data.T[dist<max_noise]
@@ -92,11 +103,13 @@ def ransacPoly(data, args, degree):
             coef_in, thisErr, _, _, _ = np.polyfit(xin, yin, degree, full=True)
             
             if thisErr < bestErr:
-                bestFit = coef_in 
+                bestFit = coef_in
         
+        countInliers_best = max(countInliers, countInliers_best)
+        numInliers[numIterations] = countInliers_best
         numIterations += 1
         
-    return bestFit 
+    return bestFit, numInliers 
 
 def clacDistance(data, degree=1): 
     # randomly select a sample of deg+1 points from data 
@@ -153,7 +166,6 @@ def clacDistance(data, degree=1):
     
     return dist 
 
-
 if __name__=="__main__":
     args = {
         'num_inliers': 20,
@@ -161,8 +173,8 @@ if __name__=="__main__":
         'noise_ratio': 0.1,
         'xstart': 0,
         'xspan': 5,
-        'maxIterations': 16,
+        'maxIterations': 16*20,
         'inlierRatio': 0.3
     }
 
-    test_ransacPoly(args, deg=3, ransac=True)
+    test_ransacPoly(args, deg=2, ransac=True)

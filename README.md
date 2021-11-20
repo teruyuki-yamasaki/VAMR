@@ -14,6 +14,10 @@ This course contains the exercise parts, in which students can gain hands-on exp
 
 ### 03. [Harris detector + descriptor + matching](https://github.com/teruyuki-yamasaki/VA4MR/tree/main/exercise03)
 
+<img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise03/results/matches.png"/>
+
+under process ... 
+
 ### 04. [SIFT detector + descriptor + matching](https://github.com/teruyuki-yamasaki/VAMR/tree/main/exercise04)
 
 ### 05. [Stereo Dense Reconstruction](https://github.com/teruyuki-yamasaki/VAMR/tree/main/exercise05)

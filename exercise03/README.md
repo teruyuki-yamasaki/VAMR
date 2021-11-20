@@ -13,7 +13,7 @@
 <img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise03/results/shitomashi.png"/>
 <img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise03/results/harris.png"/>
 
-### TODO:
+#### TODO:
 - score のヒストグラムの可視化
 
 [matches.py](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise03/code/matches.py)
@@ -21,5 +21,6 @@
 <img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise03/results/matches.png"/>
 
 - np.uniqueがおかしなことをしていないか？
+- keypoint matching の高速化
 
 [main.py](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise03/code/main.py)

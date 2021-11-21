@@ -12,6 +12,8 @@ This course contains the exercise parts, in which students can gain hands-on exp
 
 ### 02. [the Perspective-n-Points (PnP) problem](https://github.com/teruyuki-yamasaki/VA4MR/tree/main/exercise02)
 
+<img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise02/results/pnp.png"/>
+
 ### 03. [Harris detector + descriptor + matching](https://github.com/teruyuki-yamasaki/VA4MR/tree/main/exercise03)
 
 <img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise03/results/matches.png"/>

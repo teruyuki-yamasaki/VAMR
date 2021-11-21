@@ -21,3 +21,7 @@ disparityの計算([code](https://github.com/teruyuki-yamasaki/VAMR/blob/main/ex
 
 ## part 2: outlier removal 
 Reject all amibuous matches. 
+
+
+## part 3: Point cloud triangulation 
+

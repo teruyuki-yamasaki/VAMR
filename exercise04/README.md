@@ -16,3 +16,7 @@ size: (3024, 4032)
 type: <class 'numpy.ndarray'>
 size: (3024, 4032)
 ```
+
+SHIFT detectors:
+<img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise04/results/img1part.png"/>
+<img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise04/results/img2part.png"/>

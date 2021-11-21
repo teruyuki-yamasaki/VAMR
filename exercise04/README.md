@@ -1,6 +1,6 @@
 # DoG
 
-
+### dataset
 [code](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise04/code/main.py)
 
 used images:
@@ -17,7 +17,8 @@ type: <class 'numpy.ndarray'>
 size: (3024, 4032)
 ```
 
-comparison ofr algorithms for computing the intensity gradients:
+### image gradient 
+comparison ofr algorithms for computing the image gradients:
 <img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise04/results/gradient.png"/>
 ```
 --------------------test Image Gradient--------------------
@@ -34,7 +35,7 @@ alg=3: 0.000132
 shape = (15, 15, 2)
 ```
 
-
+### Gaussian Filter 
 comparison of algorithms for perfoming the Gaussian filtering:
 <img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise04/results/GaussFilter3.png"/>
 <img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise04/results/gaussed.png"/>
@@ -51,6 +52,6 @@ alg=3: 0.000116
 shape= (15, 15)
 ```
 
-SHIFT detectors:
+### SHIFT detectors:
 <img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise04/results/img1part.png"/>
 <img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise04/results/img2part.png"/>

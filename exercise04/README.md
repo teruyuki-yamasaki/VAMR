@@ -19,7 +19,7 @@ size: (3024, 4032)
 ```
 
 ### image gradient 
-comparison ofr algorithms for computing the image gradients:
+comparison of algorithms for computing the image gradients:
 <img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise04/results/gradient.png"/>
 ```
 --------------------test Image Gradient--------------------

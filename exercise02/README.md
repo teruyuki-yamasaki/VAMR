@@ -46,8 +46,9 @@ K (3,3) =
 ../data/images_undistorted/img_0002.jpg
 ../data/images_undistorted/img_0003.jpg
 ...
+```
 
-'''
+```
  Pwh = 
  [[  0.    10.4    0.    10.4    0.    10.4    0.    10.4   19.4   19.4
    19.4   19.4 ]

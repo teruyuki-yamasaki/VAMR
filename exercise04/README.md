@@ -1,8 +1,9 @@
 # DoG
 
-### dataset
+
 [code](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise04/code/main.py)
 
+### dataset
 used images:
 
 <img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise04/results/img1img2.png"/>

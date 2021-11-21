@@ -22,6 +22,8 @@ under process ...
 
 ### 04. [SIFT detector + descriptor + matching](https://github.com/teruyuki-yamasaki/VAMR/tree/main/exercise04)
 
+<img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise04/results/SHIFT.png"/>
+
 ### 05. [Stereo Dense Reconstruction](https://github.com/teruyuki-yamasaki/VAMR/tree/main/exercise05)
 
 <img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise05/results/disparity_ssd_01.png"/>

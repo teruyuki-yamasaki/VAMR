@@ -36,7 +36,7 @@ shape = (15, 15, 2)
 
 
 comparison of algorithms for perfoming the Gaussian filtering:
-<img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise04/results/GaussFiltr2.png"/>
+<img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise04/results/GaussFilter3.png"/>
 <img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise04/results/gaussed.png"/>
 ```
 --------------------test Gaussian Filter--------------------

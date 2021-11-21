@@ -5,6 +5,7 @@ To estimate the camera pose for each image in a given dataset, using correspondi
 <img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise02/results/pnp.png"/>
 
 
+dataset:
 ```
 K (3,3) = 
  [[420.506712   0.       355.208298]
@@ -46,6 +47,7 @@ K (3,3) =
 ../data/images_undistorted/img_0003.jpg
 ...
 
+'''
  Pwh = 
  [[  0.    10.4    0.    10.4    0.    10.4    0.    10.4   19.4   19.4
    19.4   19.4 ]

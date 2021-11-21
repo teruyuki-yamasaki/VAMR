@@ -48,7 +48,8 @@ K (3,3) =
 ...
 ```
 
-homogenous coordinates
+
+homogenous coordinates:
 ```
  Pwh = 
  [[  0.    10.4    0.    10.4    0.    10.4    0.    10.4   19.4   19.4
@@ -66,7 +67,8 @@ homogenous coordinates
  [  1.    1.    1.    1.    1.    1.    1.    1.    1.    1.    1.    1. ]]
 ```
 
-comparison of the detected corners and the reprojected corners 
+
+comparison of the detected corners and the reprojected corners:
 ```
  q = 
  [[186.5 264.5 218.5 285.5 292.5 356.5 406.5 461.5 388.5 495.5 396.5 496.5]

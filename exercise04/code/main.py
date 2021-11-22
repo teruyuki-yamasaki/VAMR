@@ -2,6 +2,7 @@ import numpy as np
 import cv2 
 import matplotlib.pyplot as plt 
 import time 
+from scipy import ndimage
 
 def main():
     ### 1. Load images ###
@@ -14,7 +15,7 @@ def main():
         iminfo(img2, 'Img2') 
         imcompare(img1, img2) 
     
-    if 1: # no need to use smaller data once you get faster algs 
+    if 0: # no need to use smaller data once you get faster algs 
         # Extract corresponding parts of the images because the original ones are too large to handle. 
         img1 = img1[1400:1600, 1400:1600]
         img2 = img2[1500:2000, 250:750]
@@ -29,23 +30,32 @@ def main():
     
     if 0:
         run_test_imgrad() 
+
+    if 0:
+        run_test_nonMaxSuppress3d()
+    
+    if 0:
+        run_test_selectKeyPoints() 
     
     if 1:
         des1 = img2des(img1) 
-        des2 = img2des(img2) 
+        des2 = img2des(img2)   
+        
+        if 1:
+            img1 = imkpts(img1, des1)
+            img2 = imkpts(img2, des2)
+            
+            f, (ax1, ax2) = plt.subplots(1, 2, sharey=True, figsize=(10,10))
+            ax1.imshow(img1) 
+            ax1.set_title('img1')
+            ax2.imshow(img2) 
+            ax2.set_title('img2')
+            plt.show() 
 
-        showkpts(img1, des1) 
-        showkpts(img2, des2)   
-
-def showkpts(img, descriptors):
-
-    #print(len(descriptors))
-    kpts = np.zeros((len(descriptors),2), dtype=int) # datatype ?? 
-
-    print(len(kpts)) 
-
+def imkpts(img, des):
+    kpts = np.zeros((len(des),2), dtype=int) # datatype ?? 
     cnt = 0 
-    for des in descriptors:
+    for des in des:
         if des.octave == 0:
             kpts[cnt,0] = des.x 
             kpts[cnt,1] = des.y 
@@ -53,17 +63,10 @@ def showkpts(img, descriptors):
 
         else:
             pass 
-        
-    
-    kpts = kpts[:cnt] 
-    
-    print(len(kpts)) 
 
-    print(np.count_nonzero(kpts)) # 2634 
+    img = impoints(img, kpts[:cnt])  
 
-    img = impoints(img, kpts) 
-
-    imshow(img)
+    return img
 
 def img2des(img, O=5, S=3, sigma0=1.6, r=2):
     gauss, diffs = octavatePyramids(img, O, S, sigma0, r) 
@@ -82,7 +85,7 @@ def diffs2des(gauss, diffs, octave, nonmax_suppression_radius=3):
 
     descriptors = list() 
     #print(DoGpyramid.shape)
-    for zyx in kpts: 
+    for zyx in kpts.T: 
         z, y, x = zyx 
         #print(z, y, x) 
 
@@ -155,27 +158,35 @@ def DoGpyramid2KeyPoints(diffs, C=1, nonmax_suppression_radius=5):
         - kpts: selected key points 
         - zxy: 
     '''
+    t0 = time.time() 
     diffs[diffs<=C] = 0 
     diffs = nonMaxSuppress3d(diffs, nonmax_suppression_radius) 
+    t1 = time.time() 
+    print('\n noiseSuppression', t1-t0) 
+
+    t0 = time.time() 
     kpts = selectKeyPoints3d(diffs)
+    t1 = time.time() 
+    print('\n selectKeyPoints3d', t1-t0) 
 
     return kpts
 
-def selectKeyPoints3d(X, r=1):
-    if 0:
+def selectKeyPoints3d(X, threshold=1, r=1, alg=2):
+    if alg==0:
         kpts = np.zeros_like(X, dtype=bool) 
-        zyx = [] 
-        for s in range(X.shape[0]-2*r):
-            for v in range(X.shape[1]-2*r):
-                for u in range(X.shape[2]-2*r):
-                    x = X[s:s+2*r+1, v:v+2*r+1, u:u+2*r+1] 
+        X_pad = np.zeros((X.shape[0]+2*r, X.shape[1]+2*r, X.shape[2]+2*r), dtype=np.uint32) 
+        X_pad[r:-r,r:-r,r:-r] = X
+        for s in range(1,X.shape[0]-1):
+            for v in range(X.shape[1]):
+                for u in range(X.shape[2]):
+                    x = X_pad[s:s+2*r+1, v:v+2*r+1, u:u+2*r+1] 
                     M = x[r,r,r]
                     x[r,r,r] = 0 
-                    if M > np.max(x):
-                        #print(s,v,u)
-                        kpts[s+r, v+r, u+r] = True 
-                        zyx.append([s+r,v+r,u+r]) 
-    else:
+                    if M > np.max(x) and M > threshold: 
+                        kpts[s, v, u] = True 
+        zyx = np.stack(np.where(kpts)) 
+
+    elif alg==1:
         depth, height, width = X.shape  
         patches = np.zeros((depth, height, width, (2*r+1)**3))
         for z in range(2*r+1):
@@ -204,13 +215,22 @@ def selectKeyPoints3d(X, r=1):
         kptId = kpts.flatten() * np.arange(len(kpts.flatten()))
         kptId = kptId[kptId!=0] 
 
-        zyx = np.zeros((len(kptId[1:]),3),dtype=np.uint32) 
+        zyx = np.zeros((3,len(kptId[1:])),dtype=np.uint32) 
         for i, id in enumerate(kptId[1:]):
             z = id // (height*width) 
             y = (id % (height*width)) // width
             x = (id % (height*width)) % width 
 
-            zyx[i] = [z, y, x] 
+            zyx[:,i] = [z, y, x] 
+    
+    else:
+        X_max = ndimage.maximum_filter(X, size=(2*r+1,2*r+1,2*r+1))
+        iskpt = (X == X_max) * (X >= threshold)
+        iskpt[0] = 0
+        iskpt[-1] = 0
+
+        idkpt = np.where(iskpt) 
+        zyx = np.vstack(idkpt) 
 
     return zyx
 
@@ -222,8 +242,8 @@ def nonMaxSuppress2d(X, r=1):
             X[v:v+2*r+1, u:u+2*r+1] = (x== M)*M
     return X 
 
-def nonMaxSuppress3d(X, r=1):
-    if 1:
+def nonMaxSuppress3d(X, r=1, alg=0):
+    if alg==-1:
         for s in range(len(X)-2*r):
             for v in range(len(X[0])-2*r):
                 for u in range(len(X[0][0])-2*r):
@@ -231,7 +251,18 @@ def nonMaxSuppress3d(X, r=1):
                     M = np.max(x) 
                     X[s:s+2*r+1, v:v+2*r+1, u:u+2*r+1] = (x==M)*M
     
-    if 0:
+    elif alg==-1:
+        X_pad = np.zeros((X.shape[0]+2*r, X.shape[1]+2*r, X.shape[2]+2*r), dtype=np.uint32)
+        X_pad[r:-r,r:-r,r:-r] = X 
+        for s in range(X.shape[0]):
+            for v in range(X.shape[1]):
+                for u in range(X.shape[2]): 
+                    x = X_pad[s:s+2*r+1, v:v+2*r+1, u:u+2*r+1] 
+                    M = np.max(x) 
+                    X_pad[s:s+2*r+1, v:v+2*r+1, u:u+2*r+1] = (x==M)*M
+        X = X_pad[r:-r,r:-r,r:-r] 
+    
+    elif alg==1:
         depth, height, width = X.shape  
         patches = np.zeros((depth, height, width, (2*r+1)**3))
         for z in range(2*r+1):
@@ -239,15 +270,18 @@ def nonMaxSuppress3d(X, r=1):
                 for x in range(2*r+1):
                     patch = np.roll(X.flatten(), -(width*height*z + width*y + x)).reshape(depth, height, width) 
                     patches[:,:,:, (2*r+1)**2*z + (2*r+1)*y + x] = patch 
-                    print((2*r+1)**2*z + (2*r+1)*y + x)
                         
         patches = patches[:-2*r, :-2*r, :-2*r, :]
 
-        maxes = np.max(patches, axis=-1, keepdims=True)  
+        maxes = np.max(patches, axis=-1, keepdims=True)    
 
         patches[patches < maxes] = 0 
 
-        X[r:-r,r:-r,r:-r] = patches # the edges remains 
+        X[r:-r,r:-r,r:-r] = np.max(patches, axis=-1) # the edges remains 
+    
+    elif alg==2:
+        X_max = ndimage.maximum_filter(X, size=(2*r+1,2*r+1,2*r+1))
+        X[X < X_max] = 0 
           
     return X 
 
@@ -365,7 +399,7 @@ def imgradMagDir(img, method='Prewitt'):
     #Grt = np.zeros_like(Gxy) 
     Grt = np.zeros(Gxy.shape, float)  
     Grt[:,:,0] = np.sqrt(Gxy[:,:,0]**2 + Gxy[:,:,1]**2) 
-    Grt[:,:,1] = np.arctan2(Gxy[:,:,1], Gxy[:,:,0]) 
+    Grt[:,:,1] = np.arctan2(Gxy[:,:,1], Gxy[:,:,0]) # returns: Array of angles in radians, in the range [-pi, pi]
     return Grt
 
 def imgrad(img, op, alg=3):  
@@ -441,17 +475,17 @@ def impad(img, pad=[1,1]):
 def imread(filename):
     return cv2.imread(filename, cv2.IMREAD_GRAYSCALE) 
 
-def imshow(img, name='img', size=(30,10)):
+def imshow(img, name='img', size=(30,10), cmap='gray'): 
     plt.subplots(figsize=size) 
-    plt.imshow(img, cmap = 'gray') 
+    plt.imshow(img, cmap = cmap) 
     plt.title(name)
     plt.show() 
 
-def imcompare(img1, img2, name1='img1', name2='img2', size=(20,10)):
+def imcompare(img1, img2, name1='img1', name2='img2', size=(20,10), cmap='gray'):
     f, (ax1, ax2) = plt.subplots(1, 2, sharey=True, figsize=size)
-    ax1.imshow(img1, cmap = 'gray') 
+    ax1.imshow(img1, cmap = cmap) 
     ax1.set_title(name1)
-    ax2.imshow(img2, cmap = 'gray') 
+    ax2.imshow(img2, cmap = cmap) 
     ax2.set_title(name2)
     plt.show() 
 
@@ -478,10 +512,10 @@ def run_test_imgrad():
     print('-'*num + 'test Image Gradient' + '-'*num)
 
     kernel = GradientFilter(method='Sobel') 
-    print("sum gradient filter =", np.sum(kernel))
+    print("the sum of gradient filter components =", np.sum(kernel))
     #imshow(kernel, size=(15,5), name='Sobel filter')
 
-    N = 15*15
+    N = 15 
     img = np.random.randint(255, size=(N,N))
     #imshow(img) 
 
@@ -490,8 +524,9 @@ def run_test_imgrad():
         g = imgrad(img, kernel, alg=i)
         t1 = time.time() 
         print(f'alg={i}: %f' % (t1 -t0))
-        print(g.shape)
+        print('shape =', g.shape)
         #imshow(g[:,:,0], name='{}'.format(i))
+        imcompare(img, g[:,:,0], name1= 'original', name2='Ix') 
     
     '''
     sum filter = 0
@@ -511,13 +546,14 @@ def run_test_imgrad():
 def run_test_gaussian():
     print('-'*num + 'test Gaussian Filter' + '-'*num)
 
-    kernel = GaussianFilter(sigma=1.6, r=1)
+    r = 3
+    kernel = GaussianFilter(sigma=1.6, r=r)
 
-    print("sum gaussian filter =", np.sum(kernel))
+    print("the sum of the gaussian filter components =", np.sum(kernel))
 
-    #imshow(kernel, size=(15,5), name='Gaussian filter')
+    imshow(kernel, size=(15,5), name='Gaussian filter')
 
-    N = 15 * 15
+    N = 15 
     img = np.random.randint(255, size=(N,N))
 
     for i in [0,1,2,3]:
@@ -525,10 +561,87 @@ def run_test_gaussian():
         g = imconv(img, kernel, alg=i)
         t1 = time.time() 
         print(f'alg={i}: %f' % (t1 -t0))
-        print(g.shape)
+        print('shape=', g.shape)
         #imshow(g, name='{}'.format(i))
+        imcompare(img, g, 'original', f'Gaussian Smoothing: r={r}')
+
+def run_test_nonMaxSuppress3d():
+    print('-'*num + 'test nonMaxSuppress3d' + '-'*num) 
+
+    d = 4; h = 5; w = 6
+    Zlim = (-50, 50)
+    r = 1
+    threshold = np.random.choice(np.arange(Zlim[0], Zlim[1])) 
+    V = np.random.randint(Zlim[0], Zlim[1], (d,h,w))  
+    V_max = ndimage.maximum_filter(V, (2*r+1, 2*r+1,2*r+1)) 
+
+    print('sample data info:')
+    print('\n V = \n', V) 
+    print('\n V_max = \n', V_max)
+    print('\n shape: ', (d,h,w))
+    print('\n range: ', Zlim) 
+    print('\n filter radius: ', r)
+    print('\n threshold: ', threshold) 
+
+    for i in range(3):
+        print('\n alg = ', i)
+
+        t0 = time.time() 
+        Vsi = nonMaxSuppress3d(V, r=1,  alg=i)
+        t1 = time.time() 
+        print('time: %f ' % (t1-t0)) 
+        print(Vsi) 
+
+
+def run_test_selectKeyPoints():
+    print('-'*num + 'test selectKeyPoints3d' + '-'*num) 
+
+    #d = 5; h = 200; w = 300
+    d = 4; h = 5; w = 6
+    Zlim = (-50, 50)
+    r = 1
+    threshold = np.random.choice(np.arange(Zlim[0], Zlim[1])) 
+    V = np.random.randint(Zlim[0], Zlim[1], (d,h,w))  
     
-    
+    V_max = ndimage.maximum_filter(V, (2*r+1, 2*r+1,2*r+1)) 
+    iskpt = (V == V_max) * (V >= threshold) * 1
+    iskpt[0] = 0
+    iskpt[-1] = 0 
+    idkpt = np.vstack(np.where(iskpt)) 
+
+    print('sample data info:')
+    print('\n V = \n', V) 
+    print('\n V_max = \n', V_max)
+    print('\n shape: ', (d,h,w))
+    print('\n range: ', Zlim) 
+    print('\n filter radius: ', r)
+    print('\n threshold: ', threshold) 
+
+    print(' \n\n process of selection')
+ 
+    print('\n iskpt = \n', iskpt) 
+    print('\n idkpt = \n', idkpt) 
+
+
+    print('\n\n Let us compare several algorithms:')
+
+    for i in range(3):
+        print('\n alg = ', i)
+
+        t0 = time.time() 
+        kpti = selectKeyPoints3d(V, threshold, r=1,  alg=i)
+        t1 = time.time() 
+        print('time: %f ' % (t1-t0)) 
+        print(kpti) 
+        
+        '''
+        if np.allclose(kpti, idkpt):
+            print('successful :)')
+        else:
+            print('failed :<')
+        '''
+
+
 
 if __name__=='__main__':
     main()

@@ -2,6 +2,7 @@ import numpy as np
 import cv2 
 from scipy.ndimage.filters import gaussian_filter,convolve
 import matplotlib.pyplot as plt
+import time
 
 def imgrad(img, filter='Sobel', alg=0):
     kernel = np.array([[-1,0,1],[-2,0,2],[-1,0,1]]) if filter=='Sobel' \

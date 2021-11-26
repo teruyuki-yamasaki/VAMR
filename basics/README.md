@@ -1,7 +1,7 @@
 # Basics 
 
 ## image gradient 
-
+<img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/basics/data/images/KTTI0.png"/>
 ```
 ********************test imgrad********************
 with ../data/images/KTTI0.png
@@ -21,6 +21,9 @@ with ../data/images/KTTI0.png
 
  alg = 2 took 0.0354 sec
  ```
+ <img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/basics/data/images/KTTI0_IxIy_alg0.png"/>
+ <img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/basics/data/images/KTTI0_IxIy_alg1.png"/>
+ <img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/basics/data/images/KTTI0_IxIy_alg2.png"/>
  
  ```
 ********************test imgrad********************
@@ -42,4 +45,6 @@ with ../data/images/CircleLineRect.png
  alg = 2 took 0.0071 sec
 
 ```
-
+<img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/basics/data/images/CircleLineRect_IxIy_alg0.png"/>
+<img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/basics/data/images/CircleLineRect_IxIy_alg1.png"/>
+<img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/basics/data/images/CircleLineRect_IxIy_alg2.png"/>

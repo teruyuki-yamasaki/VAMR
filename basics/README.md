@@ -1,6 +1,7 @@
 # Basics 
 
 ## image gradient 
+
 <img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/basics/data/images/KTTI0.png"/>
 
 ```
@@ -29,6 +30,7 @@ with ../data/images/KTTI0.png
  
  
  <img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/basics/data/images/CircleLineRect.png"/>
+ 
 ```
 ********************test imgrad********************
 with ../data/images/CircleLineRect.png
@@ -47,8 +49,8 @@ with ../data/images/CircleLineRect.png
  alg = 1 took 0.0016 sec
 
  alg = 2 took 0.0071 sec
-
 ```
+
 <img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/basics/data/images/CircleLineRect_IxIy_alg0.png"/>
 <img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/basics/data/images/CircleLineRect_IxIy_alg1.png"/>
 <img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/basics/data/images/CircleLineRect_IxIy_alg2.png"/>

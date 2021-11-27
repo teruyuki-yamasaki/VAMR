@@ -3,6 +3,7 @@
 To implement Harris corner detection and key point tracking: First evaluate the Harris score for each pixel of the input image, then select key points based on the Harris scores, and finally match descriptors in order to find feature correnspondences between frames. 
 
 <img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise03/data/000000.png"/>
+<img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise03/results/matches_000086_grad1_match2_mode1.png"/>
 
 [imgrad.py](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise03/code/imgrad.py)
 ([test](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise03/code/test_imgrad.py))

@@ -20,7 +20,7 @@ To implement Harris corner detection and key point tracking: First evaluate the 
 
 [matches.py](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise03/code/matches.py)
 
-- check using a rolled image
+- check key point matching using a pair of an image and its shifted data 
 <img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise03/results/matches_000000_grad1_match2_mode0.png"/>
 
 - np.uniqueがおかしなことをしていないか？

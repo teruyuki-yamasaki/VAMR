@@ -219,10 +219,10 @@ def matchDescriptors(query, refer, match_lambda=4, alg=2):
     #---------------------------------------------------------------------------------------
     elif alg==2:
         ssd = cdist(query, refer, metric='euclidean') #.astype(np.uint32)        
-        mask = (np.min(ssd, axis=-1, keepdims=True) == ssd) # find a match for each query descriptor 
-        mask *= (np.min(ssd, axis=0, keepdims=True) == ssd) # do not allow multiple match for each reference descriptor
-        mask *= ((np.min(ssd)+1)*match_lambda >= ssd)       # apply a threshold, assumig that min_ssd can be excatly equal to 0: +1 is for that reason. 
-        matches = np.vstack(np.where(mask))                 # obtain (y,x) from a boolean matrix 
+        mask = (np.min(ssd, axis=-1, keepdims=True) == ssd) # to find a match for each query descriptor 
+        mask *= (np.min(ssd, axis=0, keepdims=True) == ssd) # so as not to allow multiple match for each reference descriptor
+        mask *= ((np.min(ssd)+1)*match_lambda >= ssd)       # to apply a threshold, assumig that min_ssd can be excatly equal to 0: +1 is for that reason. 
+        matches = np.vstack(np.where(mask))                 # to obtain (y,x) from a boolean matrix 
 
     return matches 
 

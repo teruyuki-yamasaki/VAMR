@@ -1,4 +1,4 @@
-# Bandle Adjustment 
+# Bundle Adjustment 
 
 ## Input Data 
 ```

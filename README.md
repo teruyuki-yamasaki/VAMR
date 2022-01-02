@@ -32,3 +32,6 @@ This course contains the exercise parts, in which students can gain hands-on exp
 <img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise06/results/matches.png"/>
 
 ### 07. [From image to localization](https://github.com/teruyuki-yamasaki/VAMR/tree/main/exercise07)
+
+
+### 09. [Bundle adjustment](https://github.com/teruyuki-yamasaki/VAMR/tree/main/exercise09)

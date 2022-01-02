@@ -7,3 +7,4 @@ input data are given in [this form](https://github.com/teruyuki-yamasaki/VAMR/bl
 
 ## NLLS (Non-Linear Least Squares) 
 [lsnonlin.ipynb](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise09/lsnonlin.ipynb)
+<img src='https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise09/extra/lsnonlin.png'>

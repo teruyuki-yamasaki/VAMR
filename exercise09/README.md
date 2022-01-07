@@ -27,9 +27,12 @@ poses((250, 12), dtype('float64')) =
 ```
 the details are [here](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise09/inputdata.md)
 
-## Part 1: Non-Linear Least Squares 
+## NLLS (Non-Linear Least Squares) 
+[lsnonlin.ipynb](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise09/lsnonlin.ipynb)
+<img src='https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise09/extra/lsnonlin.png'>
 
 
+<img src='https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise09/extra/part1.png'>
 
 ## BA (Bundle Adjustment)
 

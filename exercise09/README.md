@@ -2,7 +2,7 @@
 
 ## Input Data 
 
-input data are given in [this form](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise09/inputdata.md)
+input data are given as the following:
 ```
 K((3, 3), dtype('float64')) = 
 [[718.856    0.     607.1928]
@@ -25,6 +25,7 @@ poses((250, 12), dtype('float64')) =
    9.998627e-01  6.007777e+00]
  ...
 ```
+the details are [here](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise09/inputdata.md)
 
 ```
 for i in range(cropped_num_frames):

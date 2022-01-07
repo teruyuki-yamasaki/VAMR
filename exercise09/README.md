@@ -26,6 +26,17 @@ poses((250, 12), dtype('float64')) =
  ...
 ```
 
+```
+for i in range(cropped_num_frames):
+  id_kpts = observations[obs_id+1+2*num_kpts:obs_id+1+3*num_kpts].astype(int)
+  box[i] = np.max(id_kpts) 
+```
+<img src='https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise09/extra/max_id_kpts_full.png'>
+
 ## NLLS (Non-Linear Least Squares) 
 [lsnonlin.ipynb](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise09/lsnonlin.ipynb)
 <img src='https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise09/extra/lsnonlin.png'>
+
+
+## BA (Bundle Adjustment)
+

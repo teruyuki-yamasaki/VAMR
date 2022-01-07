@@ -93,7 +93,3 @@ for i in range(cropped_num_frames):
   box[i] = np.max(id_kpts) 
 ```
 <img src='https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise09/extra/max_id_kpts_full.png'>
-
-## NLLS (Non-Linear Least Squares) 
-[lsnonlin.ipynb](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise09/lsnonlin.ipynb)
-<img src='https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise09/extra/lsnonlin.png'>

@@ -27,6 +27,8 @@ poses((250, 12), dtype('float64')) =
 ```
 the details are [here](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise09/inputdata.md)
 
+<img src="https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise09/extra/estimation_gc_150.png">
+
 ## NLLS (Non-Linear Least Squares) 
 [lsnonlin.ipynb](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise09/lsnonlin.ipynb)
 <img src='https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise09/extra/lsnonlin.png'>

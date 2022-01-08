@@ -37,4 +37,4 @@ the details are [here](https://github.com/teruyuki-yamasaki/VAMR/blob/main/exerc
 <img src='https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise09/extra/part1.png'>
 
 ## BA (Bundle Adjustment)
-
+<img src='https://github.com/teruyuki-yamasaki/VAMR/blob/main/exercise09/extra/smallBA_least_squares.png'>
